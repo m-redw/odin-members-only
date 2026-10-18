@@ -24,4 +24,10 @@ async function removeUser(id) {
   await pool.query("DELETE FROM users WHERE id = $1", [id]);
 }
 
-module.exports = {};
+module.exports = {
+  getUser,
+  addUser,
+  updateUserMember,
+  updateUserAdmin,
+  removeUser,
+};
