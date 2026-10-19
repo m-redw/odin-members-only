@@ -7,7 +7,7 @@
   <body>
     <% if (locals.user) {%>
         <h1>For admins only.</h1>
-        <form action="/admin/<%=  user.id %>" method="POST">
+        <form action="/admin/<%= user.id %>" method="POST">
             <label for="password">Enter secret password:</label>
             <input id="password" name="password" type="password" />
             <button type="submit">I am an admin.</button>

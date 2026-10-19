@@ -7,7 +7,7 @@
   <body>
     <% if (locals.user) {%>
         <h1>Want to join the clubhouse, <%= user.username %>?</h1>
-        <form action="/member/<%=  user.id %>" method="POST">
+        <form action="/member/<%= user.id %>" method="POST">
             <label for="password">Enter secret password:</label>
             <input id="password" name="password" type="password" />
             <button type="submit">Join clubhouse.</button>
