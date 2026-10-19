@@ -6,7 +6,11 @@ const {
   updateUserMember,
   updateUserAdmin,
 } = require("../db/userQueries");
-const { addMessage, getAllMessages } = require("../db/messageQueries");
+const {
+  addMessage,
+  getAllMessages,
+  removeMessage,
+} = require("../db/messageQueries");
 const appRouter = Router();
 
 const { loadEnvFile } = require("node:process");
@@ -77,6 +81,11 @@ appRouter.post("/admin/:userId", async (req, res) => {
     await updateUserAdmin(req.params.userId);
     res.redirect("/");
   }
+});
+
+appRouter.post("/delete/:messageId", async (req, res) => {
+  await removeMessage(req.params.messageId);
+  res.redirect("/");
 });
 
 module.exports = appRouter;
