@@ -11,10 +11,10 @@
         <!-- list messages here -->
         <% if (locals.messages) {%>
           <%messages.forEach((message)=> {%>
-              <p><%= user.isMember ? message.author : "???"%></p>
-              <p><%= user.isMember ? message.date : "???"%></p>
+              <p><%= user.ismember ? message.author : "???"%></p>
+              <p><%= user.ismember ? message.date : "???"%></p>
               <p><%= message.message %></p>
-              <% if (user.isAdmin) {%>
+              <% if (user.isadmin) {%>
                 <form action="/delete/:<%= message.id %>" method="POST">
                   <button type="submit">Delete</button>
                 </form>

@@ -1,11 +1,17 @@
 const bcrypt = require("bcryptjs");
 const passport = require("passport");
 const { Router } = require("express");
-const { addUser } = require("../db/userQueries");
+const { addUser, updateUserMember } = require("../db/userQueries");
 const { addMessage, getAllMessages } = require("../db/messageQueries");
 const appRouter = Router();
 
+const { loadEnvFile } = require("node:process");
+if (process.env.NODE_ENV !== "production") {
+  loadEnvFile();
+}
+
 appRouter.get("/", async (req, res) => {
+  console.log(req.user);
   const messages = await getAllMessages();
   res.render("homepage", { user: req.user, messages: messages });
 });
@@ -50,6 +56,13 @@ appRouter.post("/create-message/:username", async (req, res) => {
 
 appRouter.get("/member", (req, res) => {
   res.render("member-pass", { user: req.user });
+});
+
+appRouter.post("/member/:userId", async (req, res) => {
+  if (req.body.password === process.env.MEMBER_PASS) {
+    await updateUserMember(req.params.userId);
+    res.redirect("/");
+  }
 });
 
 appRouter.get("/admin", (req, res) => {
