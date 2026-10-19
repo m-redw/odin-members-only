@@ -2,10 +2,12 @@ const bcrypt = require("bcryptjs");
 const passport = require("passport");
 const { Router } = require("express");
 const { addUser } = require("../db/userQueries");
+const { addMessage, getAllMessages } = require("../db/messageQueries");
 const appRouter = Router();
 
-appRouter.get("/", (req, res) => {
-  res.render("homepage", { user: req.user });
+appRouter.get("/", async (req, res) => {
+  const messages = await getAllMessages();
+  res.render("homepage", { user: req.user, messages: messages });
 });
 
 appRouter.get("/sign-up", (req, res) => {
@@ -39,6 +41,11 @@ appRouter.get("/log-out", (req, res, next) => {
     }
     res.redirect("/");
   });
+});
+
+appRouter.post("/create-message/:username", async (req, res) => {
+  await addMessage(req.body.message, req.params.username, new Date());
+  res.redirect("/");
 });
 
 appRouter.get("/member", (req, res) => {
