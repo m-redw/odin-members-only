@@ -4,6 +4,8 @@ const session = require("express-session");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const appRouter = require("./routes/appRouter");
+const pool = require("./db/pool");
+const bcrypt = require("bcryptjs");
 const { loadEnvFile } = require("node:process");
 if (process.env.NODE_ENV !== "production") {
   loadEnvFile();
