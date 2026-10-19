@@ -24,7 +24,7 @@ appRouter.get("/", async (req, res) => {
 });
 
 appRouter.get("/sign-up", (req, res) => {
-  res.render("sign-up");
+  res.render("sign-up", { user: req.user });
 });
 
 appRouter.post("/sign-up", async (req, res, next) => {
