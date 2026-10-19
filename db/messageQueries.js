@@ -7,9 +7,9 @@ async function getMessage(id) {
   return rows[0];
 }
 
-async function getAllMessages(id) {
+async function getAllMessages() {
   const { rows } = await pool.query("SELECT * FROM messages");
-  return rows[0];
+  return rows;
 }
 
 async function addMessage(message, author, date) {
