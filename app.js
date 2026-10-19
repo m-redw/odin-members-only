@@ -11,9 +11,14 @@ if (process.env.NODE_ENV !== "production") {
 
 const app = express();
 
+// connect to views
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
+
+// let app understand posts
 app.use(express.urlencoded({ extended: true }));
+
+// handle user sessions
 app.use(
   session({
     secret: process.env.SECRET,
@@ -62,8 +67,10 @@ passport.deserializeUser(async (id, done) => {
   }
 });
 
+// route stuff
 app.use("/", appRouter);
 
+// listen
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, (error) => {
   if (error) {
