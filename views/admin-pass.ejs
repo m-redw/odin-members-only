@@ -5,6 +5,22 @@
     <title>Admin</title>
   </head>
   <body>
-    <h1>admin form here</h1>
+    <% if (locals.user) {%>
+        <h1>For admins only.</h1>
+        <form action="/admin" method="POST">
+            <label for="password">Enter secret password:</label>
+            <input id="password" name="password" type="text" />
+            <button type="submit">I am an admin.</button>
+        </form>
+    <% } else { %>
+        <h1>Log in to see this!</h1>
+        <form action="/log-in" method="POST">
+            <label for="username">Username</label>
+            <input id="username" name="username" placeholder="username" type="text" />
+            <label for="password">Password</label>
+            <input id="password" name="password" type="password" />
+            <button type="submit">Log In</button>
+        </form>
+    <%}%>
   </body>
 </html>
