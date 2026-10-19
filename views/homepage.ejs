@@ -6,10 +6,30 @@
   </head>
   <body>
     <% if (locals.user) {%>
-        <h1>WELCOME BACK <%= user.username %></h1>
-        <a href="/log-out">LOG OUT</a>
+        <h1>Clubhouse Chat</h1>
 
         <!-- list messages here -->
+        <% if (locals.messages) {%>
+          <%messages.forEach((message)=> {%>
+              <p><%= user.isMember ? message.author : "???"%></p>
+              <p><%= user.isMember ? message.date : "???"%></p>
+              <p><%= message.message %></p>
+              <% if (user.isAdmin) {%>
+                <form action="/delete/:<%= message.id %>" method="POST">
+                  <button type="submit">Delete</button>
+                </form>
+              <% } %>
+          <% }) %>
+        <% } %>
+
+        <!-- Create message -->
+        <form action="/create-message/<%= user.username %>" method="POST">
+          <label for="message">Enter Message</label>
+          <input id="message" name="message" type="text" />
+          <button>Send</button>
+        </form>
+
+        <a href="/log-out">LOG OUT</a>
 
     <% } else { %>
         <h1>Log in to see messages!</h1>
