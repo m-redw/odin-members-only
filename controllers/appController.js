@@ -14,17 +14,36 @@ const { validationResult } = require("express-validator");
 const { validateUser, validateMessage } = require("./validations");
 
 const { loadEnvFile } = require("node:process");
+const { error } = require("node:console");
 if (process.env.NODE_ENV !== "production") {
   loadEnvFile();
 }
 
 const renderHomepage = async (req, res) => {
+  const errors = req.session.errors || [];
+  const oldInput = req.session.oldInput || {};
+
+  // delete makes these disappear on page refresh
+  delete req.session.errors;
+  delete req.session.oldInput;
+
   const messages = await getAllMessages();
-  res.render("homepage", { user: req.user, messages: messages });
+  res.render("homepage", {
+    user: req.user,
+    messages: messages,
+    errors: errors,
+    oldInput: oldInput,
+  });
 };
 
 const renderSignUp = (req, res) => {
-  res.render("sign-up", { user: req.user });
+  const errors = req.session.errors || [];
+  const oldInput = req.session.oldInput || {};
+
+  delete req.session.errors;
+  delete req.session.oldInput;
+
+  res.render("sign-up", { user: req.user, errors: errors, oldInput: oldInput });
 };
 
 const postSignUp = [
@@ -33,12 +52,13 @@ const postSignUp = [
     // check if valid sign up
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return (
-        res
-          .status(400)
-          // render error messages if no valid
-          .render("sign-up", { user: req.user, errors: errors.array() })
-      );
+      // save into req object's session
+      // so get request can see
+      req.session.errors = errors.array();
+      req.session.oldInput = req.body;
+      // redirect instead of render
+      // render here would still be post request, which is no no
+      return res.redirect("/sign-up");
     }
 
     // if valid, do password cryption and user creation
@@ -73,10 +93,9 @@ const postAddMessage = [
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).render("homepage", {
-        user: req.user,
-        errors: errors.array(),
-      });
+      req.session.errors = errors.array();
+      req.session.oldInput = req.body;
+      return res.redirect("/");
     }
 
     await addMessage(req.body.message, req.params.username, new Date());
