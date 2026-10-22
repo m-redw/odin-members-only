@@ -8,8 +8,8 @@ const validateUser = [
     .withMessage("Username must be at least 3 chararacters long.")
     .escape(),
   body("password")
-    .isLength({ min: 3 })
-    .withMessage("Password must be at least 3 characters long.")
+    .isLength({ min: 5 })
+    .withMessage("Password must be at least 5 characters long.")
     .matches(/[a-z]/)
     .withMessage("Password must contain at least 1 lowercase letter.")
     .matches(/[A-Z]/)
