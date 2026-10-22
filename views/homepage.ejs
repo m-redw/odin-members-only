@@ -25,7 +25,7 @@
         <!-- Create message -->
         <form action="/create-message/<%= user.username %>" method="POST">
           <label for="message">Enter Message</label>
-          <input id="message" name="message" type="text" />
+          <input id="message" name="message" value="<%= locals.oldInput.message %>" type="text" />
           <button>Send</button>
         </form>
         <%- include("partials/errors.ejs") %>
